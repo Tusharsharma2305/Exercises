@@ -1,0 +1,72 @@
+"exercise1.jsp"
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>
+		<%
+		java.sql.Connection c = null;
+		try {
+			Class.forName("org.postgresql.Driver");//Load the driver to JVM
+			c = java.sql.DriverManager.getConnection("jdbc:postgresql://localhost:5432/javadb", "postgres", "Password");
+			java.sql.ResultSet rs=c.createStatement().executeQuery("Select * from login where u='"
+					+request.getParameter("uname") + "' and p='" + request.getParameter("upass")+"';");
+			if(rs.next()){
+				model.User.u=request.getParameter("uname");
+				response.sendRedirect("success.jsp");
+				//out.println("Welcome: "+request.getParameter("uname")+ "<br>");
+			}
+			else
+				out.println("Bad Uname or password!! <br>");
+			
+		} catch (Exception e) {
+			out.println(e);
+		}
+		
+		
+		%>
+		
+		
+	</h1>
+</body>
+</html>
+
+"index.html"
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action="exercise1.jsp">
+		Login: <input type="text" name="uname"> 
+		Password: <input type="password" name="upass"> 
+		<input type="submit" value="login">
+	</form>
+</body>
+</html>
+
+"success.jsp"
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>Welcome: <%=model.User.u %></h1>
+
+</body>
+</html>
+
