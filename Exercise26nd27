@@ -1,0 +1,145 @@
+"Main.java"
+
+package org.mybatis;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.List;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+public class Main {
+	public static void main(String[] args) {
+		try {
+			Reader reader = Resources.getResourceAsReader("mybatis-config.xml");
+			SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+			SqlSession session = sqlSessionFactory.openSession();
+			// session.getConfiguration().addMapper(Student_mapper.class);
+			Employee_mapper mapper = session.getMapper(Employee_mapper.class);
+
+		
+//			  Create a new student object 
+			Employee employee = new Employee(1,"Tushar",2000); 
+			  //Insert student data 
+			mapper.insert(employee);
+			   
+			System.out.println("record inserted successfully");
+			
+			/*
+			 * //select a particular student using id Student student = mapper.getById(2);
+			 * System.out.println("Current details of the student are "+student.toString());
+			 * //Set new values to the mail and phone number of the student
+			 * student.setCourse("MTech"); student.setRoll(8); //Update the student record
+			 * mapper.update(student); System.out.println("Record updated successfully");
+			 */
+			/*
+			 * //Get the student details Student student = mapper.getById(2);
+			 * System.out.println(student);
+			 */
+
+			/*
+			 * mapper.delete(7); System.out.println("record deleted successfully");
+			 */
+
+			// List<Student> student = session.selectList("Student.getAll")
+//			List<Employee> std = mapper.getAll();
+//			for (Employee s : std)
+//				System.out.println(s);
+			session.commit();
+			session.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+
+"Employee.java"
+
+
+package org.mybatis;
+
+public class Employee {
+	private int id;
+	private String name;
+	
+	private int sal;
+
+	public Employee(int id,String name, int sal) {
+		this.id = id;
+		this.name = name;
+		this.sal = sal;
+		
+	}
+
+	public Employee() {
+	}
+
+	public String toString() {
+		return "\nID: " + id + " Name: " + name + " SAL : " + sal;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public int getsal() {
+		return sal;
+	}
+
+	public void setsal(int sal) {
+		this.sal = sal;
+	}
+}
+
+
+
+"Employee_mapper.java"
+
+package org.mybatis;
+
+import java.util.List;
+import org.apache.ibatis.annotations.*;
+
+public interface Employee_mapper {
+	final String getAll = "SELECT * FROM EMPLOYEE";
+	final String getById = "SELECT * FROM EMPLOYEE WHERE EID = #{id}";
+	final String deleteById = "DELETE from EMPLOYEE WHERE EID = #{id}";
+	final String insert = "INSERT INTO EMPLOYEE (ID, NAME, sal) VALUES (#{id}, #{name}, #{sal})";
+	final String update = "UPDATE EMPLOYEE SET ID = #{id},NAME = #{name},SALARY = #{sal} WHERE ID = #{id}";
+
+	@Select(getAll)
+	@Results(value = { @Result(property = "id", column = "EID"), @Result(property = "name", column = "ENAME"),
+			@Result(property = "sal", column = "ESAL") })
+	List<org.mybatis.Employee> getAll();
+
+	@Select(getById)
+	@Results(value = { @Result(property = "id", column = "EID"), @Result(property = "name", column = "ENAME"),
+			@Result(property = "sal", column = "ESAL") })
+	Employee getById(int id);
+
+	@Update(update)
+	void update(Employee employee);
+
+	@Delete(deleteById)
+	void delete(int id);
+
+	@Insert(insert)
+	// @Options(useGeneratedKeys = true, keyProperty = "id")
+	void insert(Employee employee);
+}
