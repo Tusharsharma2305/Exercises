@@ -1,0 +1,83 @@
+package exercise;
+
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class Bank
+ */
+@WebServlet("/Bank")
+public class Bank extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public Bank() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+//		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//		java.io.PrintWriter out = response.getWriter(); 
+//		String login=request.getParameter("login");
+//		String pd = request.getParameter("pswd");
+//		String amt = request.getParameter("amt");
+//        String date = request.getParameter("date");
+//		out.println("<html><body><h1>Welcome "+ login +"! <br> with password: " + pd); 
+//
+//
+//		//using HttpSession:
+//		javax.servlet.http.HttpSession session= request.getSession(); 
+//		
+//		session.setAttribute("User Name ",login); 
+//		session.setAttribute("Passwrod", pd);
+//		session.setAttribute("Loan Amount",amt); 
+//		session.setAttribute("Date",date); 
+//		out.println("<a href='index2.html'><br>Continue for loan .. </a>");
+		
+				
+			DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("ddMMyyyy");
+			Random a = new Random();
+			DecimalFormat b = new DecimalFormat("0000000");
+			response.setContentType("text/html");
+			java.io.PrintWriter out = response.getWriter();
+			String n = request.getParameter("name");
+			String l = request.getParameter("loan");
+			int loan = Integer.parseInt(l);
+			if ((n != null && n.trim().length() != 0) && (l != null && l.trim().length() != 0)) {
+				out.println("<div align = \"center\"> User Id Is : " 
+			            + "<font color='red'>" + n.toUpperCase() + "</font>"
+						+ "<font color ='green'>" + LocalDate.now().format(myFormatObj) + "</font>"
+						+ "<font color = 'skyblue'>" +b.format(loan)+ "</font>" + "<font color = 'black'>"
+						+ String.format("%04d", a.nextInt(10000)) + "</font></div>");
+			}
+			else
+			{
+				out.println("Name or loan Amount Field Is Empty");
+			}
+		}
+
+	}
+
+
