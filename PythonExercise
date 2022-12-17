@@ -1,0 +1,37 @@
+# python class to convert a integer to a roman numeral a roman numeral to an integer
+class Conversion:
+    def intTORoman(self,num):
+        res = ""
+        table = [(1000, "M"),(900, "CM"),(500, "D"),(400, "CD"),(100, "C"),(90, "XC"),(50, "L"),(40, "XL"),(10, "X"),
+      (9, "IX"),(5, "V"),(4, "IV"),(1, "I")]
+        for cap, roman in table:
+            d, m = divmod(num, cap)
+            res += roman * d
+            num = m
+        return res
+    def romanToInt(self, s):
+        roman = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000,'IV':4,'IX':9,'XL':40,'XC':90,'CD':400,'CM':900}
+        i = 0
+        num = 0
+        while i < len(s):
+            if i+1<len(s) and s[i:i+2] in roman:
+                num+=roman[s[i:i+2]]
+                i+=2
+            else:
+                num+=roman[s[i]]
+                i+=1
+        return num
+        
+        
+        
+        
+ch=int(input("Enter your choice: \n 1. Roman to integer:\n 2. Integer to roman:"))
+c1=Conversion()
+if(ch==1):
+    num=int(input("Enter the number:"))
+    print("The roman number for ",num," is: ",c1.intTORoman(num))
+elif(ch==2):
+    s=input("Enter the numeral:")
+    print("The integer for ",s," is: ",c1.romanToInt(s))
+else:
+    print("Incorrect choice!!")
