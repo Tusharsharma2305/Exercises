@@ -1,0 +1,14 @@
+def bubblesort(l1):
+    n= len(l1)
+    for i in range(a):
+        for j in range(a-i-1):
+            if(l1[j]>l1[j+1]):
+                l1[j],l1[j+1]=l1[j+1],l1[j]
+    return l1
+l1=[]
+a=int(input("Enter the number of elements you wish to enter: "))
+for i in range(0, a):
+    l = int(input())
+    l1.append(l)
+print("List entered by user",l1)
+print("Sorted list:",bubblesort(l1))
